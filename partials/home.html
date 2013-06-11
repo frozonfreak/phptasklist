@@ -1,0 +1,31 @@
+<div class="container">
+	<legend>Task Details</legend>
+	<form class="form-inline">
+		<label>Enter New Task</label>
+		<input type="text" placeholder="Type task.." ng-model='task'>
+		<input class="input-xlarge" type="text" placeholder="Type details.." ng-model='taskDetail'>
+		<button type="submit" class="btn" ng-click="addTask()">Add Task</button>
+	</form>
+	<hr>
+	<table class="table">
+		<thead>
+			<th>Name</th>
+			<th>Detail</th>
+			<th>Progress</th>
+			<th>Tasks</th>
+		</thead>
+		<tbody ng-repeat='tasks in taskList'>
+			<td>{{tasks.name}}</td>
+			<td>{{tasks.details}}</td>
+			<td>
+				<input class="input-mini" type="text" ng-model='tasks.progress' ng-change="updateTaskProgress(tasks.id,tasks.progress)">
+			</td>
+			<td>
+				<div class="btn-group">
+				    <a class="btn" ng-click="archiveTasks(tasks.id)"><i class="icon-book"></i></a>
+				    <a class="btn" ng-click="deleteTask(tasks.id)"><i class="icon-trash"></i></a>
+				 </div>
+			</td>
+		</tbody>
+	</table>
+</div>
