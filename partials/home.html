@@ -26,14 +26,17 @@
 			<th>Name</th>
 			<th>Detail</th>
 			<th>Progress</th>
+			<th>Deadline</th>
 			<th>Tasks</th>
 		</thead>
 		<tbody ng-repeat='tasks in taskList'>
 			<td>{{tasks.name}}</td>
 			<td>{{tasks.details}}</td>
 			<td>
-				<input class="input-mini" type="text" ng-model='tasks.progress' ng-change="updateTaskProgress(tasks.id,tasks.progress)">
+				<!--<input class="input-mini" type="text" ng-model='' ng-change="updateTaskProgress(tasks.id,tasks.progress)">-->
+				{{tasks.progress}}
 			</td>
+			<td>{{tasks.deadline}}</td>
 			<td>
 				<div class="btn-group">
 				    <a class="btn" ng-click="archiveTasks(tasks.id)"><i class="icon-book"></i></a>
