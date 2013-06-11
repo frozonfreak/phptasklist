@@ -1,4 +1,4 @@
-var tasklistApp = angular.module('tasklistApp',[]);
+var tasklistApp = angular.module('tasklistApp',['ui.date']);
 
 //Routing
 tasklistApp.config(function ($routeProvider) {
@@ -10,17 +10,19 @@ tasklistApp.config(function ($routeProvider) {
             })
         .otherwise({ redirectTo: '/' });
 });
+
 //Handle all HTTP calls to server
 tasklistApp.factory('tasklistSession', function($http){
     return {
         getTaskDetails: function() {
         	return $http.post('server/retrieveTasks.php');
         },
-       	updateNewTask: function(name, detail) {
+       	updateNewTask: function(name, detail, deadLine) {
         	return $http.post('server/updateTask.php',{
-        		type	: 'newTask',
-        		taskName: name,
-        		taskDetail: detail
+        		type		: 'newTask',
+        		taskName	: name,
+        		taskDetail 	: detail,
+        		deadLine 	: deadLine
         	});
         },
         archiveTask: function(taskID){
@@ -43,6 +45,7 @@ tasklistApp.controller('tasklistMain', function($scope, tasklistSession){
 	$scope.taskList = [];
 	$scope.task;
 	$scope.taskDetail;
+	$scope.deadLine;
 	$scope.updateTasks = function(data, status, headers, config){
 		$scope.taskList = [];
 		if(data['status'] == 1){
@@ -75,8 +78,8 @@ tasklistApp.controller('tasklistMain', function($scope, tasklistSession){
 	};
 	$scope.addTaskToList = function(data, status, headers, config){
 		console.log(data);
-		$scope.taskList.push($scope.task);
-		$scope.task='';
+		$scope.refreshTaskList();
+		$scope.task = $scope.taskDetail = $scope.deadLine='';
 	};
 	$scope.archiveTasks = function(taskID){
 		tasklistSession.archiveTask(taskID).success($scope.archiveSuccess).error($scope.displayError);
@@ -94,7 +97,7 @@ tasklistApp.controller('tasklistMain', function($scope, tasklistSession){
 	};
 	$scope.addTask = function(){
 		if($scope.task){
-			tasklistSession.updateNewTask($scope.task, $scope.taskDetail).success($scope.addTaskToList).error($scope.displayError);
+			tasklistSession.updateNewTask($scope.task, $scope.taskDetail, $scope.deadLine).success($scope.addTaskToList).error($scope.displayError);
 		}
 	};
 });

@@ -1,9 +1,23 @@
+<div class="navbar navbar-inverse">
+  <div class="navbar-inner">
+    <a class="brand" href="#">Task Details</a>
+    <ul class="nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li><a href="#">Link</a></li>
+      <li><a href="#">Link</a></li>
+      <li><form class="navbar-search pull-left">
+  			<input type="text" class="search-query" placeholder="Search">
+  		  </form>
+  	  </li>
+    </ul>
+  </div>
+</div>
 <div class="container">
-	<legend>Task Details</legend>
 	<form class="form-inline">
 		<label>Enter New Task</label>
 		<input type="text" placeholder="Type task.." ng-model='task'>
 		<input class="input-xlarge" type="text" placeholder="Type details.." ng-model='taskDetail'>
+		<input type="text" placeholder="DeadLine.." ui-date="{ dateFormat: 'yy-mm-dd' }" ui-date-format ng-model="deadLine">
 		<button type="submit" class="btn" ng-click="addTask()">Add Task</button>
 	</form>
 	<hr>

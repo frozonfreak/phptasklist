@@ -14,12 +14,12 @@ class DB_Functions{
 		 
 	}
 
-	public function storeTaskDetails($name, $details=''){
+	public function storeTaskDetails($name, $details='', $deadLine){
 		try{
 			$db = new PDO(DB_STRING, DB_USER, DB_PASSWORD);
-			$sql = "INSERT INTO tasklist(name, details, progress, archive, lastedit, date) values (:name, :details, 0, 0, NOW(), NOW())";
+			$sql = "INSERT INTO tasklist(name, details, progress, archive, lastedit, deadline, date) values (:name, :details, 0, 0, NOW(), :deadLine, NOW())";
 			$response = $db->prepare($sql);
-			$response->execute(array(':name' => $name, ':details' => $name));
+			$response->execute(array(':name' => $name, ':details' => $details, ':deadLine' => $deadLine));
 			$db = null;
 			return 1;
 		}

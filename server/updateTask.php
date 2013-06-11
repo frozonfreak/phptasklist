@@ -14,7 +14,8 @@
 		        if(isset($receivedData->{"taskName"})){
 		        	$taskName 	= $receivedData->{"taskName"};
 		        	$taskDetail = $receivedData->{"taskDetail"};
-		        	$res = $db->storeTaskDetails($taskName, $taskDetail);
+		        	$taskDeadLine = $receivedData->{"deadLine"};
+		        	$res = $db->storeTaskDetails($taskName, $taskDetail, $taskDeadLine);
 
 		        	if($res)
 		        	    $response = array("status" => 1,
