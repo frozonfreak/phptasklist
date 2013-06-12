@@ -128,7 +128,7 @@ tasklistApp.controller('tasklistMain', function($scope, tasklistSession){
 		}
 	};
 	$scope.updateProgress = function($event, taskID, progressValue){
-		if(progressValue>0 && progressValue<=100){
+		if(progressValue>=0 && progressValue<=100){
 			tasklistSession.updateTaskProgress(taskID, progressValue).success($scope.statusCheckProgress).error($scope.displayError);
 		}
 		else{
@@ -151,7 +151,16 @@ tasklistApp.controller('tasklistMain', function($scope, tasklistSession){
 	};
 	$scope.addTask = function(){
 		if($scope.task){
-			tasklistSession.updateNewTask($scope.task, $scope.taskDetail, $scope.deadLine).success($scope.addTaskToList).error($scope.displayError);
+			if($scope.task.length<150 || $scope.taskDetail<500)
+				tasklistSession.updateNewTask($scope.task, $scope.taskDetail, $scope.deadLine).success($scope.addTaskToList).error($scope.displayError);
+			else{
+				$scope.alerts=[];
+				$scope.alerts.push({type: 'error', msg: "Task or Detail too long"});
+			}
+		}
+		else{
+			$scope.alerts=[];
+			$scope.alerts.push({type: 'error', msg: "Task Title cannot be empty"});
 		}
 	};
 });

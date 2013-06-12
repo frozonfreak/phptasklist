@@ -22,14 +22,14 @@
 		<button type="submit" class="btn" ng-click="addTask()">Add Task</button>
 	</form>
 	<hr>
-	<table class="table">
+	<table class="table span12">
 		<thead>
-			<th>Name</th>
-			<th>Detail</th>
-			<th>Progress</th>
-			<th>Update Progress</th>
-			<th><div class="span1">Deadline</div></th>
-			<th>Tasks</th>
+			<th style="width: 20%">Name</th>
+			<th style="width: 20%">Detail</th>
+			<th style="width: 20%">Progress</th>
+			<th style="width: 20%">Update Progress</th>
+			<th style="width: 20%"><div class="span1">Deadline</div></th>
+			<th style="width: 20%">Tasks</th>
 		</thead>
 		<tbody ng-repeat='tasks in taskList | filter:searchText'>
 			<td>{{tasks.name}}</td>
