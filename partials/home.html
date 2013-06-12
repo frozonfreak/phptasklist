@@ -13,6 +13,7 @@
   </div>
 </div>
 <div class="container">
+	<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert()">{{alert.msg}}</alert>
 	<form class="form-inline">
 		<label>Enter New Task</label>
 		<input type="text" placeholder="Type task.." ng-model='task'>

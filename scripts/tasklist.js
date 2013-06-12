@@ -1,4 +1,4 @@
-var tasklistApp = angular.module('tasklistApp',['ui.date']);
+var tasklistApp = angular.module('tasklistApp',['ui.date','ui.bootstrap']);
 
 //Routing
 tasklistApp.config(function ($routeProvider) {
@@ -46,6 +46,7 @@ tasklistApp.controller('tasklistMain', function($scope, tasklistSession){
 	$scope.task;
 	$scope.taskDetail;
 	$scope.deadLine;
+	$scope.alerts = [];
 	$scope.updateTasks = function(data, status, headers, config){
 		$scope.taskList = [];
 		if(data['status'] == 1){
@@ -53,22 +54,31 @@ tasklistApp.controller('tasklistMain', function($scope, tasklistSession){
 				$scope.taskList.push(data['data'][i]);
 			console.log($scope.taskList);
 		}
-		else
+		else{
+			$scope.alerts=[];
+			$scope.alerts.push({type: 'error', msg: 'No tasks in DB'});
 			console.log(data['message']);
+		}
 	};
 	$scope.archiveSuccess= function(data, status, headers, config){
 		if(data['status'] == 1){
 			$scope.refreshTaskList();
 		}
-		else
-			console.log(data);
+		else{
+			$scope.alerts=[];
+			$scope.alerts.push({type: 'error', msg: data['message']});
+			console.log(data['message']);
+		}
 	};
 	$scope.deleteSuccess= function(data, status, headers, config){
 		if(data['status'] == 1){
 			$scope.refreshTaskList();
 		}
-		else
+		else{
+			$scope.alerts=[];
+			$scope.alerts.push({type: 'error', msg: data['message']});
 			console.log(data['message']);
+		}
 	};
 	$scope.refreshTaskList = function(){
 		tasklistSession.getTaskDetails().success($scope.updateTasks).error($scope.displayError);
@@ -78,6 +88,8 @@ tasklistApp.controller('tasklistMain', function($scope, tasklistSession){
 	};
 	$scope.addTaskToList = function(data, status, headers, config){
 		console.log(data);
+		$scope.alerts=[];
+		$scope.alerts.push({type: 'success', msg: 'Task Updated'});
 		$scope.refreshTaskList();
 		$scope.task = $scope.taskDetail = $scope.deadLine='';
 	};
@@ -90,6 +102,11 @@ tasklistApp.controller('tasklistMain', function($scope, tasklistSession){
 	$scope.updateTaskProgress = function(taskID, progressAmount){
 
 	};
+	$scope.closeAlert = function(index) {
+    $scope.alerts.splice(index, 1);
+  	};
+
+  	//Initializer
 	init();
 	function init(){
 		//Populate data
