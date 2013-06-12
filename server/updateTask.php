@@ -66,6 +66,26 @@
 		        }
 		        echo json_encode($response);
 		    break;
+		    case 'updateProgress':
+		    	if(isset($receivedData->{"taskID"}) && isset($receivedData->{"progress"})){
+		    		$taskID = $receivedData->{"taskID"};
+		    		$progress = $receivedData->{"progress"};
+
+		    		$res = $db->updateProgress($taskID, $progress);
+
+		    		if($res)
+		        	    $response = array("status" => 1,
+		        	                      "message"=> "Success");
+		        	else
+		        	    $response = array("status" => 0,
+		        	                      "message"=> "Error updating to DB");
+		    	}
+		    	else{
+		        	$response = array("status" => 0,
+	                      "message"=> "All fields needs to be set");
+		        }
+		        echo json_encode($response);
+		    break;
 		}
 	}
 	else {

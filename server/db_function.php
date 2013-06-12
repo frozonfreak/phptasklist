@@ -69,5 +69,18 @@ class DB_Functions{
 			return $e;
 		}
 	}
+	public function updateProgress($taskID, $progress){
+		try{
+			$db = new PDO(DB_STRING, DB_USER, DB_PASSWORD);
+			$sql = "UPDATE tasklist SET progress=? WHERE id=?";
+			$res = $db->prepare($sql);
+			$res->execute(array($progress,$taskID));
+			$db = null;
+			return 1;
+		}
+		catch(Exception $e){
+			return $e;
+		}
+	}
 }
 ?>

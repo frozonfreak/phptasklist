@@ -6,7 +6,7 @@
       <li><a href="#">Link</a></li>
       <li><a href="#">Link</a></li>
       <li><form class="navbar-search pull-left">
-  			<input type="text" class="search-query" placeholder="Search">
+  			<input type="text" class="search-query" placeholder="Search" ng-model="searchText">
   		  </form>
   	  </li>
     </ul>
@@ -30,16 +30,17 @@
 			<th>Deadline</th>
 			<th>Tasks</th>
 		</thead>
-		<tbody ng-repeat='tasks in taskList'>
+		<tbody ng-repeat='tasks in taskList | filter:searchText'>
 			<td>{{tasks.name}}</td>
 			<td>{{tasks.details}}</td>
 			<td>
-				<!--<input class="input-mini" type="text" ng-model='' ng-change="updateTaskProgress(tasks.id,tasks.progress)">-->
-				{{tasks.progress}}
+				<progress value="tasks.progress"></progress>
+				<input class="input-mini" type="text" ng-model="tasks.progress" placeholder="Enter %" ui-keypress="{'enter':'updateProgress($event, tasks.id, tasks.progress)'}">
 			</td>
 			<td>{{tasks.deadline}}</td>
 			<td>
 				<div class="btn-group">
+					<a class="btn" ng-click="editTask(tasks.id)"><i class="icon-edit"></i></a>
 				    <a class="btn" ng-click="archiveTasks(tasks.id)"><i class="icon-book"></i></a>
 				    <a class="btn" ng-click="deleteTask(tasks.id)"><i class="icon-trash"></i></a>
 				 </div>

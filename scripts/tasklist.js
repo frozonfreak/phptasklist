@@ -1,4 +1,4 @@
-var tasklistApp = angular.module('tasklistApp',['ui.date','ui.bootstrap']);
+var tasklistApp = angular.module('tasklistApp',['ui.date','ui.bootstrap','ui.keypress']);
 
 //Routing
 tasklistApp.config(function ($routeProvider) {
@@ -37,6 +37,13 @@ tasklistApp.factory('tasklistSession', function($http){
         		taskID  : taskID
         	});
         },
+        updateTaskProgress: function(taskID, progressValue){
+        	return $http.post('server/updateTask.php',{
+        		type	: 'updateProgress',
+        		taskID  : taskID,
+        		progress: progressValue
+        	});
+        }
     }
 });
 //controller
@@ -47,6 +54,7 @@ tasklistApp.controller('tasklistMain', function($scope, tasklistSession){
 	$scope.taskDetail;
 	$scope.deadLine;
 	$scope.alerts = [];
+	$scope.searchText;
 	$scope.updateTasks = function(data, status, headers, config){
 		$scope.taskList = [];
 		if(data['status'] == 1){
@@ -87,11 +95,18 @@ tasklistApp.controller('tasklistMain', function($scope, tasklistSession){
 		console.log("Error");
 	};
 	$scope.addTaskToList = function(data, status, headers, config){
-		console.log(data);
-		$scope.alerts=[];
-		$scope.alerts.push({type: 'success', msg: 'Task Updated'});
-		$scope.refreshTaskList();
-		$scope.task = $scope.taskDetail = $scope.deadLine='';
+		if(data['status'] == 1){
+			console.log(data);
+			$scope.alerts=[];
+			$scope.alerts.push({type: 'success', msg: 'Task Updated'});
+			$scope.refreshTaskList();
+			$scope.task = $scope.taskDetail = $scope.deadLine='';
+		}
+		else{
+			$scope.alerts=[];
+			$scope.alerts.push({type: 'error', msg: data['message']});
+			console.log(data['message']);
+		}
 	};
 	$scope.archiveTasks = function(taskID){
 		tasklistSession.archiveTask(taskID).success($scope.archiveSuccess).error($scope.displayError);
@@ -99,7 +114,26 @@ tasklistApp.controller('tasklistMain', function($scope, tasklistSession){
 	$scope.deleteTask = function(taskID){
 		tasklistSession.deleteTask(taskID).success($scope.deleteSuccess).error($scope.displayError);
 	};
-	$scope.updateTaskProgress = function(taskID, progressAmount){
+	$scope.statusCheckProgress = function(data, status, headers, config){
+		if(data['status'] == 1){
+			$scope.refreshTaskList();
+		}
+		else{
+			$scope.alerts=[];
+			$scope.alerts.push({type: 'error', msg: data['message']});
+			console.log(data['message']);
+		}
+	};
+	$scope.updateProgress = function($event, taskID, progressValue){
+		if(progressValue>0 && progressValue<=100){
+			tasklistSession.updateTaskProgress(taskID, progressValue).success($scope.statusCheckProgress).error($scope.displayError);
+		}
+		else{
+			$scope.alerts=[];
+			$scope.alerts.push({type: 'error', msg: 'Enter Progess Value between 0 and 100'});
+		}
+	};
+	$scope.editTask = function(taskID){
 
 	};
 	$scope.closeAlert = function(index) {
