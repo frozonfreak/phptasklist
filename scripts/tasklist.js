@@ -116,6 +116,9 @@ tasklistApp.controller('tasklistMain', function($scope, tasklistSession){
 	};
 	$scope.statusCheckProgress = function(data, status, headers, config){
 		if(data['status'] == 1){
+			$scope.alerts=[];
+			$scope.alerts.push({type: 'success', msg: 'Progress Updated'});
+			console.log(data['message']);
 			$scope.refreshTaskList();
 		}
 		else{

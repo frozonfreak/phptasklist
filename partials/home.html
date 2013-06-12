@@ -27,7 +27,8 @@
 			<th>Name</th>
 			<th>Detail</th>
 			<th>Progress</th>
-			<th>Deadline</th>
+			<th>Update Progress</th>
+			<th><div class="span1">Deadline</div></th>
 			<th>Tasks</th>
 		</thead>
 		<tbody ng-repeat='tasks in taskList | filter:searchText'>
@@ -35,8 +36,8 @@
 			<td>{{tasks.details}}</td>
 			<td>
 				<progress value="tasks.progress"></progress>
-				<input class="input-mini" type="text" ng-model="tasks.progress" placeholder="Enter %" ui-keypress="{'enter':'updateProgress($event, tasks.id, tasks.progress)'}">
 			</td>
+			<td><div class="span1"><input class="input-mini" type="text" ng-model="tasks.progress" placeholder="Enter %" ui-keypress="{'enter':'updateProgress($event, tasks.id, tasks.progress)'}"></div></td>
 			<td>{{tasks.deadline}}</td>
 			<td>
 				<div class="btn-group">
